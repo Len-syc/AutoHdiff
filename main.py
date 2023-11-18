@@ -8,15 +8,33 @@ import sys
 import threading
 import zipfile
 import shutil
+import hashlib
+def calculate_md5(file_path):
+    hash_md5 = hashlib.md5()
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+
 directory_path = os.getcwd()
 detect_list = os.listdir(directory_path)
 
 
 
 
+def Console_log(level , value):
+    if level == 1:
+        level = "Fatal"
+    elif level == 2:
+        level = "Error"
+    elif level == 3:
+        level = "info"
+    elif level == 4:
+        level = "Debug"
+    print("Level:[{}] {}".format(level , value))
 
-
-start_model = input("Level:[info] model(1.只解压和替换,2.自动下载和解压替换,):")
+start_model = input("Level:[info] model(2.自动下载和解压替换):")
 Confirm_type = input("Level:[info] do you want to jump the down?(y or n)")
 if Confirm_type == "n":
     down_type = input("Level:[info] your Client_Down_type Client or Audio or full:")
@@ -134,9 +152,10 @@ elif Client_type == "full":
     if full not in detect_list:
         print("Level:[fatal] not found Audio.zip!")
         sys.exit()
-            
+Client_1_01 = md5_value = calculate_md5("D:\Lenqin\Documents\YuanShen_1.0.1\YuanShen.exe")
 #解压
 print("Level:[info] 加载中")
+print("Level:[Debug] 跳过解压测试")
 print("Level:[info]加载压缩包中")
 for i in tqdm(range(40),desc="加载中",unit="s"):
     time.sleep(0.1)
@@ -172,12 +191,13 @@ def Get_txt_Audio():#audio only
     with open(get_dir + "\hdiffiles.txt" , "r") as hdiffiles:
         files_hdiff = hdiffiles.read()
         hdiff_pck_files = re.findall(r'(\d+\.pck)', files_hdiff)
-        if "GenshinImpact" in files_deleted:
+        if "GenshinImpact" in files_hdiff:
             Client_area = "GenshinImpact"
         else:
             Client_area = "YuanShen"
-    Client_update_Audio_dir = os.path.join(get_dir, f"{Client_area}_Data/StreamingAssets/AudioAssets/Chinese/")
-    return hdiff_pck_files , Client_area,Client_update_Audio_dir
+    Client_update_Audio_dir_old_version = os.path.join(get_dir, f"{Client_area}_Data/StreamingAssets/Audio/GeneratedSoundBanks/Windows/Chinese/")
+    Client_update_Audio_dir_new_version = os.path.join(get_dir, f"{Client_area}_Data/StreamingAssets/AudioAssets/Chinese/")
+    return hdiff_pck_files , Client_area,Client_update_Audio_dir_old_version
 def Get_txt_Client():#Client only
     get_dir = os.getcwd()
     if "deletefiles.txt" not in os.listdir(get_dir):
@@ -191,7 +211,7 @@ def Get_txt_Client():#Client only
         else:
             Client_area = "YuanShen"
     Client_update_Client_dir = os.path.join(get_dir, f"{Client_area}_Data/StreamingAssets/AssetBundles/blocks/00/")
-    return deleted_blk_files,Client_area
+    return deleted_blk_files,Client_area,Client_update_Client_dir
 def delete_blk(file_list, directory):
     for file_name in file_list:
         file_path = os.path.join(directory, file_name)
@@ -233,7 +253,7 @@ if Client_type == "Client":
     print("Level:[info] copying.........")
     for i in tqdm(range(40),desc="加载中",unit="s"):
         time.sleep(0.1)
-    copy_files(Client_update_source,directory_path)
+    # copy_files(Client_update_source,directory_path)
     
 
 elif Client_type == "Audio":
@@ -263,6 +283,7 @@ elif Client_type == "full":
     rename_audio(audio_update_source)
     copy_files(audio_update_source,directory_path)
     print("Level:[info] copy successfully!")
+Client_1_02 = md5_value = calculate_md5("D:\Lenqin\Documents\YuanShen_1.0.1\YuanShen.exe")
 #     for i in tqdm(range(40),desc="加载中",unit="s"):
 #         time.sleep(0.1)
 #     Get_txt_Client()
