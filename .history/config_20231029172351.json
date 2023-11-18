@@ -1,0 +1,29 @@
+// {
+//     "Autopatch_CN_url":{
+//         "Client_url":{
+//                         "4.0-4.1":""
+//         },
+//         "Audio_url":{
+//                         "4.0-4.1":""
+//         }
+//     },
+//     "Autopatch_OS_url":{
+//         "Client_url":{
+//                         "4.0-4.1":""
+//         },
+//         "Audio_url":{
+//                         "4.0-4.1":""
+//         }
+
+
+
+
+// }
+// }
+
+
+
+{
+    "Autopatch_Client_URL":"",
+    "Autopatch_Audio_URL":""
+}
