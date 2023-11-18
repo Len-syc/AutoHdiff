@@ -10,6 +10,7 @@ import zipfile
 import shutil
 import hashlib
 
+print("git demo")
 def calculate_md5(file_path):
     hash_md5 = hashlib.md5()
     with open(file_path, "rb") as f:
