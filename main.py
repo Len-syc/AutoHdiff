@@ -22,7 +22,7 @@ detect_list = os.listdir(directory_path)
 
 
 
-
+t1 = (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
 def Console_log(level , value):
     if level == 1:
         level = "Fatal"
@@ -32,22 +32,23 @@ def Console_log(level , value):
         level = "info"
     elif level == 4:
         level = "Debug"
-    print("Level:[{}] {}".format(level , value))
+    t1 = (time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+    print(f"Level:[{level}]|{t1}|{value}")
 
 start_model = input("Level:[info] model(2.自动下载和解压替换):")
 Confirm_type = input("Level:[info] do you want to jump the down?(y or n)")
 if Confirm_type == "n":
     down_type = input("Level:[info] your Client_Down_type Client or Audio or full:")
     while down_type not in ["Client","Audio","full"]:
-        print("Level:[Error] Client_Down_type type error!")
+        Console_log(2,"Client_Down_type type error!")
         down_type = input("Level:[info] your Client_Down_type Client or Audio:")
 elif Confirm_type == "y":
     Client_type = input("Level:[info] your Client_type Client or Audio or full:")
     while Client_type not in ["Client","Audio","full"]:
-        print("Level:[Error] Client_type type error!")
+        Console_log(2, "Client_type type error!")
         Client_type = input("Level:[info] your Client_type Client or Audio:")
 else:
-    print("Level:[fatal] Confirm_type Error!")
+    Console_log(1,"Confirm_type Error!")
     sys.exit()
 
 
@@ -59,16 +60,16 @@ else:
 ####################################### ----model 2
 if start_model == "2":
     if "config.json" not in detect_list:
-        print("Level:[Fatal] ！config配置文件不存在")
+        Console_log(1,"！config配置文件不存在")
         sys.exit()
     if Confirm_type == "y":
-        print("Level:[info] 跳过下载")
+        Console_log(3,"跳过下载")
     elif down_type in ["Client","Audio","full"]:
 
         with open(directory_path + "/config.json" , "r") as Autopatch_URL:
             json_data = json.load(Autopatch_URL)
             if "Autopatch_Client_URL" not in json_data or "Autopatch_Audio_URL" not in json_data:
-                print("Level:[Fatal] ！not found Autopatch_Client_URL and Autopatch_Audio_URL please check config.json!")
+                Console_log(1,"！not found Autopatch_Client_URL and Autopatch_Audio_URL please check config.json!")
                 sys.exit()
 
         if down_type == "Client":
@@ -118,18 +119,18 @@ def download_part(i, url, start, end, filename):
 if Confirm_type == "n" and down_type in ["Audio","Client","full"]:
     if down_type =="Client":
         download_file(Download_URL , Download_file_directory + "/Client.zip")
-        print(f"Level:[info] 下载完成,URL:{Download_URL},Type:Client,path:{Download_file_directory}+/Client.zip")
+        print(f"Level:[info]|{t1}|下载完成,URL:{Download_URL},Type:Client,path:{Download_file_directory}+/Client.zip")
     elif down_type == "Audio":
         download_file(Download_URL, Download_file_directory + "/Audio.zip")
-        print(f"Level:[info] 下载完成,URL:{Download_URL},Type:Client,path:{Download_file_directory}+/Audio.zip")
+        print(f"Level:[info]|{t1}|下载完成,URL:{Download_URL},Type:Client,path:{Download_file_directory}+/Audio.zip")
     elif down_type == "full":
         download_file(Download_URL_full_Client, Download_file_directory + "/Client.zip" )
         download_file(Download_URL_full_Audio, Download_file_directory + "/Audio.zip" )
-        print(f"Level:[info] 下载完成,URL:{Download_URL_full_Client},Type:Client,path:{Download_file_directory}+/Client.zip")
-        print(f"Level:[info] 下载完成,URL:{Download_URL_full_Audio},Type:Client,path:{Download_file_directory}+/Audio.zip")
+        print(f"Level:[info]|{t1}|下载完成,URL:{Download_URL_full_Client},Type:Client,path:{Download_file_directory}+/Client.zip")
+        print(f"Level:[info]|{t1}|下载完成,URL:{Download_URL_full_Audio},Type:Client,path:{Download_file_directory}+/Audio.zip")
 elif Confirm_type == "y":
-    print("Level:[info] 加载中")
-    print("Level:[info]加载压缩包中")
+    Console_log(3,"加载中")
+    Console_log(3,"加载压缩包中")
     for i in tqdm(range(40),desc="加载中",unit="s"):
         time.sleep(0.1)
 
@@ -141,22 +142,21 @@ if Confirm_type == "n":
 #检测
 if Client_type == "Client":
     if "Client.zip" not in detect_list:
-        print("Level:[fatal] not found Client.zip!")
+        Console_log(1,"not found Client.zip!")
         sys.exit()
 elif Client_type == "Audio":
     if "Audio.zip" not in detect_list:
-        print("Level:[fatal] not found Audio.zip!")
+        Console_log(1,"not found Audio.zip!")
         sys.exit()
 elif Client_type == "full":
     full = ["Client.zip","Audio.zip"]
     if full not in detect_list:
-        print("Level:[fatal] not found Audio.zip!")
+        Console_log(1,"not found Audio.zip!")
         sys.exit()
 Client_1_01 = md5_value = calculate_md5("D:\Lenqin\Documents\YuanShen_1.0.1\YuanShen.exe")
 #解压
-print("Level:[info] 加载中")
-print("Level:[Debug] 跳过解压测试")
-print("Level:[info]加载压缩包中")
+Console_log(3,"加载中")
+Console_log(3,"加载压缩包中")
 for i in tqdm(range(40),desc="加载中",unit="s"):
     time.sleep(0.1)
 def unzip_file(zip_filepath, dest_path):
@@ -167,26 +167,26 @@ def unzip_file(zip_filepath, dest_path):
                 zip_ref.extract(member=file, path=dest_path)
                 pbar.update(1)
 if Client_type == "Client":
-    print(f"Level:[info] 解压中{Client_type}.zip")
+    print(f"Level:[info]|{t1}|解压中{Client_type}.zip")
     unzip_file("Client.zip",Download_file_directory)
 elif Client_type == "Audio":
-    print(f"Level:[info] 解压中{Client_type}.zip")
+    print(f"Level:[info]|{t1}|解压中{Client_type}.zip")
     unzip_file("Audio",Download_file_directory)
 elif Client_type == "full":
-    print("Level:[info] 解压中Client.zip")
-    print("Level:[info] 解压中Audio.zip")
+    Console_log(3,"解压中Client.zip")
+    Console_log(3,"解压中Audio.zip")
     unzip_file("Client.zip",Download_file_directory)
     unzip_file("Audio",Download_file_directory)
 
 ########---compress
 
 ##### get the infonation from txt
-#貌似audio只有hdiff 没有deleted 而且client hdiff只要copy and deleted 但是copy的没txt消息，所以用os.lister来获取
+#貌似audio只有hdiff 没有deleted 而且client hdiff只要copy and deleted
 #audio在或许3.0后有改变(目录)
 def Get_txt_Audio():#audio only
     get_dir = os.getcwd()
     if "hdiffiles.txt" not in os.listdir(get_dir):
-        print("Level:[fatal] !hdiffiles.txt文件不存在,请检查")
+        Console_log(1,"!hdiffiles.txt文件不存在,请检查")
         sys.exit()
     with open(get_dir + "\hdiffiles.txt" , "r") as hdiffiles:
         files_hdiff = hdiffiles.read()
@@ -201,7 +201,8 @@ def Get_txt_Audio():#audio only
 def Get_txt_Client():#Client only
     get_dir = os.getcwd()
     if "deletefiles.txt" not in os.listdir(get_dir):
-        print("Level:[fatal] !deletefiles.txt文件不存在,请检查")
+        # print("Level:[fatal] !deletefiles.txt文件不存在,请检查")
+        Console_log(1,"!Deletefiles.txt文件不存在,请检查")
         sys.exit()
     with open(get_dir + "\deletefiles.txt" , "r") as deleted_file:
         files_blk_deleted = deleted_file.read()
@@ -217,15 +218,15 @@ def delete_blk(file_list, directory):
         file_path = os.path.join(directory, file_name)
         if os.path.exists(file_path):
             os.remove(file_path)
-            print(f"Level:[info] 文件 {file_name} 已被删除")
+            print(f"Level:[info]|{t1}|文件 {file_name} 已被删除")
         else:
-            print(f"Level:[Error] 未找到文件 {file_name}")
+            print(f"Level:[Error]|{t1}|未找到文件 {file_name}")
 def copy_files(source_directory, dest_directory):
     for file_name in os.listdir(source_directory):
         source_file_path = os.path.join(source_directory, file_name)
         dest_file_path = os.path.join(dest_directory, file_name)
         shutil.copy2(source_file_path, dest_file_path)
-        print(f"Level:[info] 文件 {file_name} 已被复制到 {dest_directory}。")
+        print(f"Level:[info]|{t1}|文件 {file_name} 已被复制到 {dest_directory}。")
 
 # copy_files('/path/to/source/directory', '/path/to/dest/directory')
 def rename_audio(directory):
@@ -235,7 +236,7 @@ def rename_audio(directory):
             source = os.path.join(directory, filename)
             destination = os.path.join(directory, new_filename)
             os.rename(source, destination)
-            print(f"Level:[info] 文件 {filename} 已被重命名为 {new_filename}")
+            print(f"Level:[info]|{t1}|文件 {filename} 已被重命名为 {new_filename}")
 
 
 ###先path 然后dele 然后 copy
@@ -245,12 +246,12 @@ if Client_type == "Client":
     for i in tqdm(range(40),desc="加载中",unit="s"):
         time.sleep(0.1)
     deleted_blk_files, Client_area,Client_update_Client_dir = Get_txt_Client()
-    print("Level[info] deleted.txt数值获取成功!")
+    Console_log(3,"deleted.txt数值获取成功!")
     delete_blk(deleted_blk_files,Client_update_Client_dir)
-    print(f"Level:[debug] {deleted_blk_files}")
-    print(f"Level:[debug] {Client_update_Client_dir}")
-    print("Level:[info] deleted successfully!")
-    print("Level:[info] copying.........")
+    print(f"Level:[debug]|{t1}|{deleted_blk_files}")
+    print(f"Level:[debug]|{t1}|{Client_update_Client_dir}")
+    Console_log(3,"deleted successfully!")
+    Console_log(3,"Copying..........")
     for i in tqdm(range(40),desc="加载中",unit="s"):
         time.sleep(0.1)
     # copy_files(Client_update_source,directory_path)
@@ -258,31 +259,31 @@ if Client_type == "Client":
 
 elif Client_type == "Audio":
     audio_update_source = os.path.join(update_file_list, "audio/YuanShen_Data/StreamingAssets/AudioAssets/Chinese/")
-    print(f"Level:[debug] {audio_update_source}")
+    print(f"Level:[debug]|{t1}|{audio_update_source}")
     rename_audio(audio_update_source)
     copy_files(audio_update_source,directory_path)
-    print("Level:[info] copy successfully!")
+    Console_log(3,"Copy successfully!")
 elif Client_type == "full":
     Client_update_source = os.path.join(update_file_list, "Client/")
     audio_update_source = os.path.join(update_file_list, "audio/")
     for i in tqdm(range(40),desc="加载[deleted]中",unit="s"):
         time.sleep(0.1)
     deleted_blk_files, Client_area,Client_update_Client_dir = Get_txt_Client()
-    print("Level[info] deleted.txt数值获取成功!")
+    Console_log(3,"deleted.txt数值获取成功!")
     delete_blk(deleted_blk_files,Client_update_Client_dir)
-    print(f"Level:[debug] {deleted_blk_files}")
-    print(f"Level:[debug] {Client_update_Client_dir}")
-    print("Level:[info] deleted successfully!")
-    print("Level:[info] copying.........")
+    print(f"Level:[debug]|{t1}|{deleted_blk_files}")
+    print(f"Level:[debug]|{t1}|{Client_update_Client_dir}")
+    Console_log(3,"deleted successfully!")
+    Console_log(3,"Copying...........")
     for i in tqdm(range(40),desc="加载中",unit="s"):
         time.sleep(0.1)
     copy_files(Client_update_source,directory_path)
-    print("Level:[info] Client copy successfully!")
-    print("Level:[info] copying Audio")
-    print(f"Level:[debug] {audio_update_source}")
+    Console_log(3,"Client copy successfully!")
+    Console_log(3,"Copying Audio")
+    print(f"Level:[debug]|{t1}|{audio_update_source}")
     rename_audio(audio_update_source)
     copy_files(audio_update_source,directory_path)
-    print("Level:[info] copy successfully!")
+    Console_log(3,"Copy successfully!")
 Client_1_02 = md5_value = calculate_md5("D:\Lenqin\Documents\YuanShen_1.0.1\YuanShen.exe")
 #     for i in tqdm(range(40),desc="加载中",unit="s"):
 #         time.sleep(0.1)
