@@ -1,5 +1,3 @@
 ## README
-An anime game client update 
-### Version info
+An anime game client update utility
 + version 1.0
-+ Version_Type: Release
